@@ -745,7 +745,7 @@
                                 <span class="px-3 py-1.5 bg-dark rounded-full text-xs text-primary border border-primary/20 hover:border-primary/50 transition-colors cursor-default">Tailwind</span>
                             </div>
 
-                
+            
                             <!-- Action Button -->
                             <button class="w-full py-3 bg-primary/10 border border-primary/30 text-primary font-semibold rounded-xl hover:bg-primary hover:text-dark transition-all duration-300 flex items-center justify-center gap-2 group" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">
                                 <span>Hire Me</span>
@@ -864,7 +864,7 @@
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                            React & Next.js
+                            React
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
@@ -1278,20 +1278,20 @@
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-400 mb-2">Name</label>
-                                <input type="text" class="input-field w-full px-4 py-3 bg-dark border border-white/10 rounded-lg focus:border-primary focus:outline-none transition-all text-white placeholder-gray-600" placeholder="John Doe" required>
+                                <input type="text" name="from_name" class="input-field w-full px-4 py-3 bg-dark border border-white/10 rounded-lg focus:border-primary focus:outline-none transition-all text-white placeholder-gray-600" placeholder="John Doe" required>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-400 mb-2">Email</label>
-                                <input type="email" class="input-field w-full px-4 py-3 bg-dark border border-white/10 rounded-lg focus:border-primary focus:outline-none transition-all text-white placeholder-gray-600" placeholder="john@example.com" required>
+                                <input type="email" name="from_email" class="input-field w-full px-4 py-3 bg-dark border border-white/10 rounded-lg focus:border-primary focus:outline-none transition-all text-white placeholder-gray-600" placeholder="john@example.com" required>
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-2">Subject</label>
-                            <input type="text" class="input-field w-full px-4 py-3 bg-dark border border-white/10 rounded-lg focus:border-primary focus:outline-none transition-all text-white placeholder-gray-600" placeholder="Project Inquiry" required>
+                            <input type="text" name="title" class="input-field w-full px-4 py-3 bg-dark border border-white/10 rounded-lg focus:border-primary focus:outline-none transition-all text-white placeholder-gray-600" placeholder="Project Inquiry" required>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-2">Message</label>
-                            <textarea rows="4" class="input-field w-full px-4 py-3 bg-dark border border-white/10 rounded-lg focus:border-primary focus:outline-none transition-all text-white placeholder-gray-600 resize-none" placeholder="Tell me about your project..." required></textarea>
+                            <textarea rows="4" name="message" class="input-field w-full px-4 py-3 bg-dark border border-white/10 rounded-lg focus:border-primary focus:outline-none transition-all text-white placeholder-gray-600 resize-none" placeholder="Tell me about your project..." required></textarea>
                         </div>
                         <button type="submit" class="w-full py-4 bg-primary text-dark font-bold rounded-lg hover:bg-secondary transition-all glow-hover flex items-center justify-center gap-2 group magnetic-btn">
                             <span>Send Message</span>
@@ -1666,5 +1666,29 @@
             }
         });
     </script>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+        <script>
+        (function(){
+        emailjs.init("Lomynv67E252xxVCU"); // Public Key
+        })();
+
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        emailjs.sendForm(
+            "service_40t0i3n",     // Service ID
+            "template_zi2hnoo",    // Template ID
+            this
+        )
+        .then(function() {
+            alert("Message sent successfully ✅");
+        }, function(error) {
+            alert("Failed to send ❌\n" + JSON.stringify(error));
+        });
+        });
+        </script>
 </body>
 </html>

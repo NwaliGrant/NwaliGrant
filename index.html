@@ -1304,6 +1304,9 @@
             </div>
         </div>
     </section>
+    <div id="toast" class="fixed bottom-6 right-6 px-6 py-4 rounded-lg bg-green-500 text-white font-medium shadow-lg opacity-0 pointer-events-none transition-all duration-300">
+    Message sent successfully ✅
+</div>
 
     <!-- Footer -->
     <footer class="py-8 border-t border-white/5 bg-darker">
@@ -1671,24 +1674,82 @@
         <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
         <script>
-        (function(){
-        emailjs.init("Lomynv67E252xxVCU"); // Public Key
-        })();
+(function(){
+  emailjs.init("Lomynv67E252xxVCU"); // Public Key
+})();
 
-        document.getElementById("contactForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+function showToast(message, type = "success") {
+    const toast = document.getElementById("toast");
 
-        emailjs.sendForm(
-            "service_40t0i3n",     // Service ID
-            "template_zi2hnoo",    // Template ID
-            this
-        )
-        .then(function() {
-            alert("Message sent successfully ✅");
-        }, function(error) {
-            alert("Failed to send ❌\n" + JSON.stringify(error));
-        });
-        });
-        </script>
+    toast.textContent = message;
+
+    if (type === "success") {
+        toast.className = "fixed bottom-6 right-6 px-6 py-4 rounded-lg bg-green-500 text-white font-medium shadow-lg opacity-100 transition-all duration-300";
+    } else {
+        toast.className = "fixed bottom-6 right-6 px-6 py-4 rounded-lg bg-red-500 text-white font-medium shadow-lg opacity-100 transition-all duration-300";
+    }
+
+    setTimeout(() => {
+        toast.classList.add("opacity-0");
+    }, 3000);
+}
+
+document.getElementById("contactForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const form = this;
+    const btn = form.querySelector("button");
+    const originalText = btn.innerHTML;
+
+    // Loading state
+    btn.disabled = true;
+    btn.innerHTML = "Sending...";
+
+    emailjs.sendForm("service_40t0i3n", "template_zi2hnoo", form)
+    .then(() => {
+
+        // Auto-reply to visitor
+        emailjs.sendForm("service_40t0i3n", "template_mz4u1vx", form);
+
+        showToast("Message sent successfully ✅", "success");
+        form.reset();
+
+    })
+    .catch((error) => {
+        showToast("Failed to send ❌", "error");
+        console.log(error);
+    })
+    .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    });
+});
+</script>
+
+<script>
+function showToast(message, type = "success") {
+    const toast = document.getElementById("toast");
+
+    toast.textContent = message;
+
+    // Set initial visible classes
+    const baseClasses = "fixed bottom-6 right-6 px-6 py-4 rounded-lg text-white font-medium shadow-lg transition-all duration-300";
+    const typeClass = type === "success" ? "bg-green-500" : "bg-red-500";
+    
+    toast.className = `${baseClasses} ${typeClass} opacity-100 translate-y-0`;
+
+    // 1. Start the fade out at 3 seconds
+    setTimeout(() => {
+        toast.classList.add("opacity-0", "translate-y-2");
+        
+        // 2. Fully "clear" the element from view after the transition ends (300ms)
+        setTimeout(() => {
+            toast.className = "hidden"; 
+        }, 300); 
+    }, 3000);
+}
+</script>
+
+
 </body>
 </html>

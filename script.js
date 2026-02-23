@@ -313,6 +313,9 @@ document.addEventListener('visibilitychange', () => {
         gsap.globalTimeline.resume();
     }
 });
+// ============================================
+// CONTACT FORM - EMAILJS (SINGLE HANDLER)
+// ============================================
 
 // EmailJS Initialization
 (function() {
@@ -330,47 +333,55 @@ function showToast(message, type = "success") {
     const typeClass = type === "success" ? "bg-green-500" : "bg-red-500";
     
     toast.className = `${baseClasses} ${typeClass} opacity-100 translate-y-0`;
+    toast.classList.remove("hidden", "opacity-0", "pointer-events-none");
     
-    // 1. Start the fade out at 3 seconds
+    // Hide after 3 seconds
     setTimeout(() => {
         toast.classList.add("opacity-0", "translate-y-2");
-        
-        // 2. Fully "clear" the element from view after the transition ends (300ms)
         setTimeout(() => {
-            toast.className = "hidden"; 
-        }, 300); 
+            toast.classList.add("hidden", "pointer-events-none");
+        }, 300);
     }, 3000);
 }
 
-// Contact Form Submission
+// Contact Form Submission - SINGLE HANDLER
 document.getElementById("contactForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
     const form = this;
-    const btn = form.querySelector("button");
+    const btn = form.querySelector("button[type='submit']");
     const originalText = btn.innerHTML;
 
     // Loading state
     btn.disabled = true;
-    btn.innerHTML = "Sending...";
+    btn.innerHTML = `
+        <svg class="animate-spin h-5 w-5 text-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="ml-2">Sending...</span>
+    `;
 
+    // Send main email
     emailjs.sendForm("service_40t0i3n", "template_zi2hnoo", form)
     .then(() => {
-        // Auto-reply to visitor
-        emailjs.sendForm("service_40t0i3n", "template_mz4u1vx", form);
+        // Send auto-reply to visitor
+        return emailjs.sendForm("service_40t0i3n", "template_mz4u1vx", form);
+    })
+    .then(() => {
         showToast("Message sent successfully ✅", "success");
         form.reset();
     })
     .catch((error) => {
-        showToast("Failed to send ❌", "error");
-        console.log(error);
+        console.error("EmailJS Error:", error);
+        showToast("Failed to send. Please try again. ❌", "error");
     })
     .finally(() => {
+        // Restore button
         btn.disabled = false;
         btn.innerHTML = originalText;
     });
 });
-
 
 // WhatsApp Widget Tracking
 const whatsappBtn = document.querySelector('.whatsapp-button');

@@ -442,3 +442,939 @@ body.menu-open {
 .nav-link:hover::after {
     width: 100%;
 }
+
+
+/* WhatsApp Widget */
+.whatsapp-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    animation: whatsapp-pop 0.5s ease-out;
+}
+
+@keyframes whatsapp-pop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.whatsapp-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.whatsapp-button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+    background: linear-gradient(135deg, #128C7E 0%, #25D366 100%);
+}
+
+.whatsapp-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+}
+
+.whatsapp-button:hover .whatsapp-icon {
+    transform: rotate(5deg) scale(1.1);
+}
+
+.whatsapp-text {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 0;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-button:hover .whatsapp-text {
+    max-width: 120px;
+    opacity: 1;
+    margin-left: 4px;
+}
+
+/* Pulse Animation for WhatsApp Button */
+.whatsapp-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50px;
+    background: #25D366;
+    animation: whatsapp-pulse 2s ease-out infinite;
+    z-index: -1;
+}
+
+@keyframes whatsapp-pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    70% {
+        transform: scale(1.3);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1.3);
+        opacity: 0;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .whatsapp-widget {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .whatsapp-button {
+        padding: 10px;
+        border-radius: 50px;
+        background: #25D366;
+    }
+    
+    .whatsapp-text {
+        display: none;
+    }
+    
+    .whatsapp-button:hover .whatsapp-text {
+        display: none;
+    }
+    
+    .whatsapp-icon {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .whatsapp-button:hover {
+        transform: translateY(-2px);
+    }
+}
+
+/* Dark mode optimization */
+@media (prefers-color-scheme: dark) {
+    .whatsapp-button {
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    }
+}
+
+/* Testimonials Section Styles */
+#testimonials .group {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#testimonials .group:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -15px rgba(0, 210, 106, 0.2);
+}
+
+/* Gradient Text Animation */
+.gradient-text {
+    background: linear-gradient(135deg, #00D26A 0%, #00A854 50%, #00D26A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+}
+
+@keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Rating Stars Animation */
+#testimonials .group:hover svg {
+    animation: star-pulse 0.5s ease;
+}
+
+@keyframes star-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Quote Icon Animation */
+#testimonials .group:hover .text-6xl {
+    transform: scale(1.1) rotate(5deg);
+    color: rgba(0, 210, 106, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Client Avatar Hover */
+#testimonials .group:hover .w-12.h-12 {
+    transform: scale(1.1);
+    border-color: #00D26A;
+    box-shadow: 0 0 20px rgba(0, 210, 106, 0.3);
+    transition: all 0.3s ease;
+}
+
+/* Stats Counter Animation */
+.stat-number {
+    display: inline-block;
+    animation: count-up 2s ease-out;
+}
+
+@keyframes count-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #testimonials .grid {
+        gap: 1.5rem;
+    }
+    
+    #testimonials .text-3xl {
+        font-size: 2rem;
+    }
+}
+
+/* Backdrop Blur Support */
+@supports (backdrop-filter: blur(8px)) {
+    #testimonials .bg-surface\/50 {
+        backdrop-filter: blur(8px);
+    }
+}
+
+/* Smooth Hover Transitions */
+#testimonials .group * {
+    transition: all 0.3s ease;
+}
+
+/* Gradient Border Effect on Hover */
+#testimonials .group::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(135deg, #00D26A, #00A854);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+#testimonials .group:hover::after {
+    opacity: 0.3;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 100px; /* Position above WhatsApp button */
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #00D26A 0%, #00A854 100%);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0A0A0A;
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.9);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 210, 106, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.back-to-top:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 210, 106, 0.5);
+    background: linear-gradient(135deg, #00A854 0%, #00D26A 100%);
+}
+
+.back-to-top:active {
+    transform: translateY(0) scale(0.95);
+}
+
+.back-to-top svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+
+.back-to-top:hover svg {
+    transform: translateY(-3px);
+}
+
+/* Pulse animation for when button first appears */
+.back-to-top.show {
+    animation: back-to-top-pop 0.5s ease-out;
+}
+
+@keyframes back-to-top-pop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Progress ring around button (optional) */
+.back-to-top::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    padding: 3px;
+    background: conic-gradient(#00D26A 0deg, #00A854 90deg, transparent 90deg 360deg);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.back-to-top.scrolled-50::before {
+    opacity: 1;
+}
+
+.back-to-top.scrolled-75::before {
+    background: conic-gradient(#00D26A 0deg, #00A854 180deg, transparent 180deg 360deg);
+}
+
+.back-to-top.scrolled-100::before {
+    background: conic-gradient(#00D26A 0deg, #00A854 360deg);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .back-to-top {
+        bottom: 90px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+    }
+    
+    .back-to-top svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+    .back-to-top {
+        bottom: 80px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .back-to-top {
+        background: #00D26A;
+        border: 2px solid white;
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .back-to-top,
+    .back-to-top::before,
+    .back-to-top svg {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* Screen reader only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ============================================
+   PRELOADER STYLES - FULL VERSION
+   ============================================ */
+
+/* Original Preloader Styles (from first message) */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0A0A0A 0%, #050505 100%);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                visibility 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preloader-content {
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+/* Animated Logo */
+.preloader-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+}
+
+.logo-part {
+    display: inline-block;
+    color: white;
+    animation: logoFloat 1.5s ease-in-out infinite;
+    transform-origin: center;
+}
+
+.logo-part.accent {
+    color: #00D26A;
+    animation: logoFloat 1.5s ease-in-out infinite 0.1s;
+}
+
+/* Stagger the animation for each letter */
+.logo-part:nth-child(1) { animation-delay: 0s; }
+.logo-part:nth-child(2) { animation-delay: 0.1s; }
+.logo-part:nth-child(3) { animation-delay: 0.2s; }
+.logo-part:nth-child(4) { animation-delay: 0.3s; }
+.logo-part:nth-child(5) { animation-delay: 0.4s; }
+.logo-part:nth-child(6) { animation-delay: 0.5s; }
+
+@keyframes logoFloat {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(-15px) scale(1.1);
+        opacity: 0.8;
+        color: #00D26A;
+    }
+}
+
+/* Progress Bar */
+.preloader-progress {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin: 2rem 0 1rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00D26A, #00A854, #00D26A);
+    background-size: 200% 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    animation: gradientShift 2s linear infinite;
+    position: relative;
+}
+
+/* Shine effect on progress bar */
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    animation: shine 1.5s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Loading Text */
+.preloader-text {
+    margin: 1rem 0;
+    font-size: 1rem;
+    color: #9CA3AF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+}
+
+.loading-text {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 500;
+}
+
+.loading-dots {
+    display: inline-flex;
+    gap: 2px;
+}
+
+.loading-dots span {
+    animation: dots 1.4s infinite;
+    opacity: 0;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.loading-dots span:nth-child(1) { animation-delay: 0s; }
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dots {
+    0%, 100% {
+        opacity: 0;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-5px);
+        color: #00D26A;
+    }
+}
+
+/* Percentage Display */
+.preloader-percentage {
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    color: transparent;
+    -webkit-text-stroke: 2px #00D26A;
+    margin-top: 1rem;
+    opacity: 0.8;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+/* Particle Background */
+.preloader-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #00D26A;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: particleFloat 3s linear infinite;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(100vh) scale(1);
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateY(-100px) scale(0);
+        opacity: 0;
+    }
+}
+
+/* Alternative Loading Spinner (optional) */
+.preloader-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(0, 210, 106, 0.1);
+    border-top-color: #00D26A;
+    border-radius: 50%;
+    animation: spin 1s ease-in-out infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   ADDITIONAL STYLES FOR 5-SECOND LOADER
+   (Add these after the original styles)
+   ============================================ */
+
+@keyframes logoPop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+        color: #00D26A;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Enhanced particles */
+.preloader-particles {
+    z-index: 1;
+}
+
+.particle {
+    filter: blur(1px);
+    animation: particleFloatEnhanced 4s linear infinite;
+}
+
+@keyframes particleFloatEnhanced {
+    0% {
+        transform: translateY(100vh) scale(1);
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.6;
+    }
+    80% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateY(-100px) scale(0);
+        opacity: 0;
+    }
+}
+
+/* Enhanced text transitions */
+.loading-text {
+    transition: transform 0.3s ease, color 0.3s ease;
+    display: inline-block;
+}
+
+/* Progress bar glow effect */
+.progress-bar {
+    box-shadow: 0 0 10px rgba(0, 210, 106, 0.5);
+}
+
+.progress-bar::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: progressGlow 2s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes progressGlow {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Enhanced percentage pulse */
+.preloader-percentage {
+    animation: percentagePulse 2s ease-in-out infinite;
+    text-shadow: 0 0 10px rgba(0, 210, 106, 0.3);
+}
+
+@keyframes percentagePulse {
+    0%, 100% {
+        opacity: 0.8;
+        transform: scale(1);
+        text-shadow: 0 0 10px rgba(0, 210, 106, 0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+        text-shadow: 0 0 20px rgba(0, 210, 106, 0.6);
+    }
+}
+
+/* Enhanced loading dots */
+.loading-dots span {
+    font-size: 2rem;
+    animation: dotsEnhanced 1.4s infinite;
+}
+
+@keyframes dotsEnhanced {
+    0%, 100% {
+        opacity: 0.2;
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-8px) scale(1.2);
+        color: #00D26A;
+        text-shadow: 0 0 10px #00D26A;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .preloader-logo {
+        font-size: 3rem;
+    }
+    
+    .preloader-percentage {
+        font-size: 1.5rem;
+        -webkit-text-stroke: 1px #00D26A;
+    }
+    
+    .loading-dots span {
+        font-size: 1.5rem;
+    }
+}
+
+/* Reduce motion if user prefers */
+@media (prefers-reduced-motion: reduce) {
+    .preloader * {
+        animation: none !important;
+        transition: none !important;
+    }
+    
+    .preloader-logo .logo-part {
+        animation: none;
+    }
+    
+    .progress-bar::before,
+    .progress-bar::after {
+        animation: none !important;
+    }
+}
+
+/* ============================================
+   PERFORMANCE OPTIMIZATIONS
+   ============================================ */
+
+/* Optimize animations for devices that prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .float-anim,
+    .avatar-ring,
+    .avatar-ring-reverse,
+    .pulse-ring::before {
+        animation: none !important;
+    }
+}
+
+/* Optimize for slow connections */
+.slow-connection * {
+    animation: none !important;
+    transition: none !important;
+}
+
+.slow-connection .float-anim,
+.slow-connection .avatar-ring,
+.slow-connection .avatar-ring-reverse {
+    animation: none !important;
+}
+
+/* Contain paint for better performance */
+.project-card,
+.profile-card,
+.service-card {
+    contain: content layout paint;
+}
+
+/* Optimize image rendering */
+img {
+    content-visibility: auto;
+    aspect-ratio: attr(width) / attr(height);
+}
+
+/* Will-change optimizations (use sparingly) */
+.project-card:hover,
+.magnetic-btn:hover,
+.nav-link:hover {
+    will-change: transform;
+}
+
+/* GPU acceleration for smooth animations */
+.gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Optimize scrolling */
+html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Reduce layout shifts */
+.profile-img {
+    aspect-ratio: 1/1;
+    background: #111111; /* Placeholder color */
+}
+
+/* Optimize font display */
+@font-face {
+    font-display: swap;
+}
+
+/* Hide elements until fonts load */
+.fonts-loading .text-display {
+    visibility: hidden;
+}
+
+/* Print optimization */
+@media print {
+    .no-print,
+    .magnetic-btn,
+    .cursor-dot,
+    .cursor-outline,
+    .back-to-top,
+    .whatsapp-widget {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+}
+
+/* cookies styling */
+
+/* Only essential animations that Tailwind doesn't provide */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Show/Hide states for cookie banner */
+#cookieConsent.show {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+}
+
+#cookieConsent #cookieSettings.show {
+    display: block !important;
+    animation: slideDown 0.3s ease;
+}
+
+/* Reduce motion support */
+@media (prefers-reduced-motion: reduce) {
+    #cookieConsent,
+    #cookieConsent * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+
+

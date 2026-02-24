@@ -1427,4 +1427,105 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// ============================================
+// BACKGROUND MUSIC - WORKING VERSION
+// ============================================
 
+(function() {
+    // Create audio element
+    const audio = new Audio();
+    audio.src = './music/background-music.mp3';
+    audio.loop = true;
+    audio.volume = 0.33; // 20% volume - soft background
+    
+    // Get elements
+    const musicToggle = document.getElementById('musicToggle');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+    
+    if (!musicToggle) {
+        console.error("Music button not found!");
+        return;
+    }
+    
+    console.log("🎵 Music player initialized");
+    
+    let isPlaying = false;
+    let userClicked = false;
+    
+    // Check local storage for previous preference
+    try {
+        const wasPlaying = localStorage.getItem('musicPlaying') === 'true';
+        if (wasPlaying) {
+            // Will try to play on first user interaction
+            console.log("🎵 User previously had music on");
+        }
+    } catch (e) {}
+    
+    // Toggle music on click
+    musicToggle.addEventListener('click', async function() {
+        userClicked = true;
+        console.log("🎵 Button clicked");
+        
+        if (isPlaying) {
+            // Pause music
+            audio.pause();
+            isPlaying = false;
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+            console.log("🎵 Music paused");
+            
+            try { localStorage.setItem('musicPlaying', 'false'); } catch (e) {}
+            
+        } else {
+            // Play music
+            try {
+                await audio.play();
+                isPlaying = true;
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+                console.log("🎵 Music playing now");
+                
+                try { localStorage.setItem('musicPlaying', 'true'); } catch (e) {}
+                
+            } catch (error) {
+                console.error("🎵 Play failed:", error);
+                alert("Click anywhere on the page to enable music (browser autoplay block)");
+                
+                // Try again on next user interaction
+                const playOnNextClick = async function() {
+                    try {
+                        await audio.play();
+                        isPlaying = true;
+                        playIcon.classList.add('hidden');
+                        pauseIcon.classList.remove('hidden');
+                        console.log("🎵 Music started on second click");
+                        try { localStorage.setItem('musicPlaying', 'true'); } catch (e) {}
+                        document.removeEventListener('click', playOnNextClick);
+                    } catch (e) {}
+                };
+                document.addEventListener('click', playOnNextClick, { once: true });
+            }
+        }
+    });
+    
+    // Try to load the audio file to check if it exists
+    audio.addEventListener('canplaythrough', () => {
+        console.log("✅ Music file loaded successfully");
+    });
+    
+    audio.addEventListener('error', (e) => {
+        console.error("❌ Music file failed to load:", audio.src);
+        console.error("Make sure the file exists at: ./music/background-music.mp3");
+    });
+    
+    // Handle page visibility (pause when tab hidden)
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden && isPlaying) {
+            audio.pause();
+        } else if (!document.hidden && isPlaying && userClicked) {
+            audio.play().catch(() => {});
+        }
+    });
+    
+})();

@@ -1105,11 +1105,13 @@ window.perf = {
     optimizeImages
 };
 
-
 // ============================================
 // PERFORMANCE MONITORING
 // ============================================
 
+// COMMENT OUT OR DELETE THIS ENTIRE SECTION
+
+/*
 const performanceMonitor = {
     init() {
         // Track Core Web Vitals
@@ -1244,7 +1246,7 @@ if (window.location.hostname !== 'localhost' && !window.location.hostname.includ
     // Only monitor in production
     performanceMonitor.init();
 }
-
+*/
 
 // ============================================
 // COOKIE CONSENT MANAGER - Tailwind Version

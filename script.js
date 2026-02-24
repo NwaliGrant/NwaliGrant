@@ -1,3 +1,142 @@
+// ============================================
+// EMAILJS - SIMPLIFIED WORKING VERSION
+// ============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contactForm');
+    if (!contactForm) {
+        console.error("❌ Contact form not found!");
+        return;
+    }
+
+    console.log("📝 Setting up contact form...");
+
+    // Your EmailJS credentials
+    const EMAILJS_CONFIG = {
+        publicKey: "GrqFYGbJvEMlFaMJF",
+        serviceId: "service_40t0i3n",
+        templateId: "template_zi2hnoo",
+        autoReplyTemplateId: "template_mz4u1vx"
+    };
+
+    // Initialize EmailJS with public key
+    if (typeof emailjs !== 'undefined') {
+        emailjs.init(EMAILJS_CONFIG.publicKey);
+        console.log("✅ EmailJS initialized with public key");
+    } else {
+        console.error("❌ EmailJS not loaded!");
+        return;
+    }
+
+    // Toast notification function
+    function showToast(message, isSuccess = true) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        
+        toast.textContent = message;
+        toast.className = `fixed bottom-6 right-6 px-6 py-4 rounded-lg text-white font-medium shadow-lg transition-all duration-300 z-50 ${
+            isSuccess ? 'bg-green-500' : 'bg-red-500'
+        } opacity-100 translate-y-0`;
+        toast.classList.remove('hidden');
+
+        setTimeout(() => {
+            toast.classList.add('opacity-0', 'translate-y-2');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 300);
+        }, 3000);
+    }
+
+    // Handle form submission
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalBtnContent = submitBtn.innerHTML;
+
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+            <span class="opacity-0">Sending</span>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-5 h-5 border-2 border-dark border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        `;
+
+        try {
+            // Get form data
+            const formData = {
+                from_name: this.querySelector('[name="from_name"]')?.value.trim() || '',
+                from_email: this.querySelector('[name="from_email"]')?.value.trim() || '',
+                title: this.querySelector('[name="title"]')?.value.trim() || '',
+                message: this.querySelector('[name="message"]')?.value.trim() || ''
+            };
+
+            // Validate
+            if (!formData.from_name || !formData.from_email || !formData.message) {
+                throw new Error('Please fill in all required fields');
+            }
+
+            console.log('📤 Sending email with data:', formData);
+
+            // Method 1: Try using emailjs.sendForm (often more reliable)
+            const response = await emailjs.sendForm(
+                EMAILJS_CONFIG.serviceId,
+                EMAILJS_CONFIG.templateId,
+                this,
+                EMAILJS_CONFIG.publicKey  // Pass public key explicitly
+            );
+
+            console.log('✅ Email sent successfully:', response);
+
+            // Optional: Send auto-reply
+            try {
+                await emailjs.sendForm(
+                    EMAILJS_CONFIG.serviceId,
+                    EMAILJS_CONFIG.autoReplyTemplateId,
+                    this,
+                    EMAILJS_CONFIG.publicKey
+                );
+                console.log('✅ Auto-reply sent');
+            } catch (autoReplyError) {
+                console.warn('⚠️ Auto-reply failed:', autoReplyError);
+            }
+
+            showToast('Message sent successfully!', true);
+            this.reset();
+
+        } catch (error) {
+            console.error('❌ Email error details:', {
+                message: error.message,
+                status: error.status,
+                text: error.text,
+                error: error
+            });
+            
+            let errorMessage = 'Failed to send. ';
+            if (error.status === 401) {
+                errorMessage = 'Invalid public key. Please check configuration.';
+            } else if (error.status === 404) {
+                errorMessage = 'Service or template not found.';
+            } else if (error.status === 429) {
+                errorMessage = 'Too many requests. Try again later.';
+            } else if (error.text) {
+                errorMessage = error.text;
+            } else {
+                errorMessage += error.message || 'Please try again.';
+            }
+            
+            showToast(errorMessage, false);
+        } finally {
+            // Restore button
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnContent;
+        }
+    });
+
+    console.log("✅ Contact form ready with public key:", EMAILJS_CONFIG.publicKey);
+});
+
 // Register GSAP Plugins
 gsap.registerPlugin(ScrollTrigger);
 
@@ -312,75 +451,6 @@ document.addEventListener('visibilitychange', () => {
     } else {
         gsap.globalTimeline.resume();
     }
-});
-// ============================================
-// CONTACT FORM - EMAILJS (SINGLE HANDLER)
-// ============================================
-
-// EmailJS Initialization
-(function() {
-    emailjs.init("Lomynv67E252xxVCU"); // Public Key
-})();
-
-// Toast Notification Function
-function showToast(message, type = "success") {
-    const toast = document.getElementById("toast");
-    
-    toast.textContent = message;
-    
-    // Set initial visible classes
-    const baseClasses = "fixed bottom-6 right-6 px-6 py-4 rounded-lg text-white font-medium shadow-lg transition-all duration-300";
-    const typeClass = type === "success" ? "bg-green-500" : "bg-red-500";
-    
-    toast.className = `${baseClasses} ${typeClass} opacity-100 translate-y-0`;
-    toast.classList.remove("hidden", "opacity-0", "pointer-events-none");
-    
-    // Hide after 3 seconds
-    setTimeout(() => {
-        toast.classList.add("opacity-0", "translate-y-2");
-        setTimeout(() => {
-            toast.classList.add("hidden", "pointer-events-none");
-        }, 300);
-    }, 3000);
-}
-
-// Contact Form Submission - SINGLE HANDLER
-document.getElementById("contactForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    const form = this;
-    const btn = form.querySelector("button[type='submit']");
-    const originalText = btn.innerHTML;
-
-    // Loading state
-    btn.disabled = true;
-    btn.innerHTML = `
-        <svg class="animate-spin h-5 w-5 text-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        <span class="ml-2">Sending...</span>
-    `;
-
-    // Send main email
-    emailjs.sendForm("service_40t0i3n", "template_zi2hnoo", form)
-    .then(() => {
-        // Send auto-reply to visitor
-        return emailjs.sendForm("service_40t0i3n", "template_mz4u1vx", form);
-    })
-    .then(() => {
-        showToast("Message sent successfully ✅", "success");
-        form.reset();
-    })
-    .catch((error) => {
-        console.error("EmailJS Error:", error);
-        showToast("Failed to send. Please try again. ❌", "error");
-    })
-    .finally(() => {
-        // Restore button
-        btn.disabled = false;
-        btn.innerHTML = originalText;
-    });
 });
 
 // WhatsApp Widget Tracking
